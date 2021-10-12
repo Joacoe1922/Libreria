@@ -15,7 +15,6 @@ public class MenuOpciones {
 
     //MENUS
     public void menuOpciones() {
-
         try {
             salto();
             int op;
