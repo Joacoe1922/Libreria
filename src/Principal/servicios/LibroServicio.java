@@ -15,7 +15,7 @@ public class LibroServicio {
     public void crearLibro(String titulo, int anio, int ejemplares, int ejemplaresPrestados) {
         
         try {
-            //Validamos
+            //Validamos lo que ingresamos
             if (titulo == null || titulo.trim().isEmpty()) {
                 throw new Exception("Debe indicar el titulo");
             }
