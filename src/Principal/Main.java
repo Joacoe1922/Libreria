@@ -9,7 +9,3 @@ public class Main {
         menu.menuOpciones();
     }
 }
-
-
-// PARA BORRAR COSAS EN CASCADA!
-// cascade = CascadeType.REMOVE

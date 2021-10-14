@@ -158,7 +158,7 @@ public class MenuOpciones {
 
                 switch (op) {
                     case 1:
-                        editorialServicio.crearEditorial(cargarNombreEditorial(), true);
+                        editorialServicio.crearEditorial(cargarNombreEditorial());
                         break;
                     case 0:
                         break;

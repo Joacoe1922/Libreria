@@ -57,7 +57,7 @@ public class LibroServicio {
             Collection<Editorial> editorialBuscada = editorialServicio.buscarEditorialNombre(nombreEditorial);
             
             if (editorialBuscada.isEmpty()) {
-                Editorial editorial = editorialServicio.crearEditorialParaLibro(nombreEditorial, true);
+                Editorial editorial = editorialServicio.crearEditorialParaLibro(nombreEditorial);
                 libro.setEditorial(editorial);
             } else {
                 System.out.println("La editorial ingresada ya existe. Se seleccionará!");
@@ -120,6 +120,7 @@ public class LibroServicio {
                 libro.setEjemplaresPrestados(ejemplaresPrestados);
                 libro.setEjemplaresRestantes(ejemplares - ejemplaresPrestados);
                 libro.setAutor(autorServicio.modificarAutorParaLibro(libro.getAutor().getId()));
+                
                 libro.setAlta(true);
                 
                 daoLibro.modificarLibro(libro);

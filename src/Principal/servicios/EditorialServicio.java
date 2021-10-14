@@ -8,7 +8,7 @@ public class EditorialServicio {
 
     private final EditorialDAO daoEditorial = new EditorialDAO();
     
-    public void crearEditorial(String nombre, boolean alta) {
+    public void crearEditorial(String nombre) {
 
         try {
             //Validamos
@@ -29,7 +29,7 @@ public class EditorialServicio {
             Editorial editorial = new Editorial();
 
             editorial.setNombre(nombre);
-            editorial.setAlta(alta);
+            editorial.setAlta(true);
 
             daoEditorial.guardarEditorial(editorial);
         } catch (Exception e) {
@@ -37,7 +37,7 @@ public class EditorialServicio {
         }
     }
     
-    public Editorial crearEditorialParaLibro(String nombre, boolean alta) {
+    public Editorial crearEditorialParaLibro(String nombre) {
 
         Editorial editorial = new Editorial();
         
@@ -60,7 +60,7 @@ public class EditorialServicio {
             
 
             editorial.setNombre(nombre);
-            editorial.setAlta(alta);
+            editorial.setAlta(true);
 
             daoEditorial.guardarEditorial(editorial);
         } catch (Exception e) {
@@ -80,4 +80,6 @@ public class EditorialServicio {
         }
         return editoriales;
     }
+    
+    
 }
