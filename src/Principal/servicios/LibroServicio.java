@@ -7,13 +7,16 @@ import Principal.entidades.Libro;
 import Principal.persistencia.LibroDAO;
 import java.util.Collection;
 import java.util.List;
+import java.util.Scanner;
 
 public class LibroServicio {
-    
+
     private final LibroDAO daoLibro = new LibroDAO();
-    
+
+    private Scanner leer = new Scanner(System.in).useDelimiter("\n");
+
     public void crearLibro(String titulo, int anio, int ejemplares, int ejemplaresPrestados) {
-        
+
         try {
             //Validamos
             if (titulo == null || titulo.trim().isEmpty()) {
@@ -37,9 +40,9 @@ public class LibroServicio {
 
             //valido si el autor exite. Si es así lo selecciono, sino lo creo.
             String nombreAutor = menuOpciones.cargarNombreAutor();
-            
+
             Collection<Autor> autorBuscado = autorServicio.buscarAutorNombre(nombreAutor);
-            
+
             if (autorBuscado.isEmpty()) {
                 Autor autor = autorServicio.crearAutorParaLibro(nombreAutor, true);
                 libro.setAutor(autor);
@@ -53,9 +56,9 @@ public class LibroServicio {
 
             //valido si la editorial exite. Si es así lo selecciono, sino lo creo.
             String nombreEditorial = menuOpciones.cargarNombreEditorial();
-            
+
             Collection<Editorial> editorialBuscada = editorialServicio.buscarEditorialNombre(nombreEditorial);
-            
+
             if (editorialBuscada.isEmpty()) {
                 Editorial editorial = editorialServicio.crearEditorialParaLibro(nombreEditorial);
                 libro.setEditorial(editorial);
@@ -74,13 +77,13 @@ public class LibroServicio {
             libro.setEjemplaresPrestados(ejemplaresPrestados);
             libro.setEjemplaresRestantes(ejemplares - ejemplaresPrestados);
             libro.setAlta(true);
-            
+
             daoLibro.guardarLibro(libro);
         } catch (Exception e) {
             System.out.println("No se creó el libro " + e.getMessage());
         }
     }
-    
+
     public void darAltaBajaLibro(long ISBN, boolean altaBaja) {
         try {
             if (ISBN == 0) {
@@ -92,19 +95,19 @@ public class LibroServicio {
                     daoLibro.modificarLibro(libro);
                 }
             }
-            
+
         } catch (Exception e) {
             System.out.println("Error al dar de baja " + e.getMessage());
         }
     }
-    
+
     public void modificarLibro(Long ISBN) {
         try {
             AutorServicio autorServicio = new AutorServicio();
             EditorialServicio editorialServicio = new EditorialServicio();
-            
+
             Libro libro = daoLibro.buscarLibroPorISBN(ISBN);
-            
+
             if (!libro.getISBN().equals(ISBN)) {
                 throw new Exception("El ISBN no existe");
             } else {
@@ -113,24 +116,33 @@ public class LibroServicio {
                 int anio = menuOpciones.cargarAnio();
                 int ejemplares = menuOpciones.cargarEjemplares();
                 int ejemplaresPrestados = menuOpciones.cargarEjemplaresPrestados();
-                
+
                 libro.setTitulo(titulo);
                 libro.setAnio(anio);
                 libro.setEjemplares(ejemplares);
                 libro.setEjemplaresPrestados(ejemplaresPrestados);
                 libro.setEjemplaresRestantes(ejemplares - ejemplaresPrestados);
-                libro.setAutor(autorServicio.modificarAutorParaLibro(libro.getAutor().getId()));
-                
+
+                System.out.println("¿Desea modificar el autor? (S/N)");
+                String op1 = leer.next().toLowerCase();
+                if (op1.equals("s")) {
+                    libro.setAutor(autorServicio.modificarAutorParaLibro(libro.getAutor().getId()));
+                }
+                System.out.println("¿Desea modificar la editorial? (S/N)");
+                String op2 = leer.next().toLowerCase();
+                if (op2.equals("s")) {
+                    libro.setEditorial(editorialServicio.modificarEditorialParaLibro(libro.getEditorial().getId()));
+                }
                 libro.setAlta(true);
-                
+
                 daoLibro.modificarLibro(libro);
             }
-            
+
         } catch (Exception e) {
             System.out.println("Error al modificar el libro " + e.getMessage());
         }
     }
-    
+
     public void eliminarLibro(long ISBN) {
         try {
             if (ISBN == 0) {
@@ -141,9 +153,9 @@ public class LibroServicio {
             System.out.println("Error al eliminar " + e.getMessage());
         }
     }
-    
+
     public Collection<Libro> listaLibros() throws Exception {
-        
+
         try {
             Collection<Libro> libros = daoLibro.listarLibros();
             return libros;
@@ -151,7 +163,7 @@ public class LibroServicio {
             throw e;
         }
     }
-    
+
     public void imprimirLibros() throws Exception {
         try {
             //Listamos los libros
@@ -173,24 +185,24 @@ public class LibroServicio {
             System.out.println(e.getMessage());
         }
     }
-    
+
     public void imprimirLibroPorISBN(long ISBN) {
         try {
             Libro libro = daoLibro.buscarLibroPorISBN(ISBN);
-            
+
             System.out.println("ISBN: " + libro.getISBN() + ", Titulo: " + libro.getTitulo()
                     + ", Autor: (Id: " + libro.getAutor().getId() + ", Nombre: " + libro.getAutor().getNombre()
                     + "), Editorial: (Id: " + libro.getEditorial().getId() + ", Nombre: " + libro.getEditorial().getNombre() + ")");
-            
+
         } catch (Exception e) {
             System.out.println("Error al imprimir libro por isbn " + e.getMessage());
         }
     }
-    
+
     public void imprimirLibroPorTitulo(String titulo) {
         try {
             List<Libro> libros = daoLibro.buscarLibroTitulo(titulo);
-            
+
             for (Libro libro : libros) {
                 System.out.println("ISBN: " + libro.getISBN() + ", Titulo: " + libro.getTitulo()
                         + ", Autor: (Id: " + libro.getAutor().getId() + ", Nombre: " + libro.getAutor().getNombre()
@@ -200,11 +212,11 @@ public class LibroServicio {
             System.out.println("Error al imprimir libro por titulo " + e.getMessage());
         }
     }
-    
+
     public void imprimirLibroPorNombreAutor(String nombre) {
         try {
             List<Libro> libros = daoLibro.buscarLibroPorAutor(nombre);
-            
+
             for (Libro libro : libros) {
                 System.out.println("ISBN: " + libro.getISBN() + ", Titulo: " + libro.getTitulo()
                         + ", Autor: (Id: " + libro.getAutor().getId() + ", Nombre: " + libro.getAutor().getNombre()
@@ -214,5 +226,5 @@ public class LibroServicio {
             System.out.println("Error al imprimir libro por autor " + e.getMessage());
         }
     }
-    
+
 }

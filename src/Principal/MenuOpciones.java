@@ -57,7 +57,7 @@ public class MenuOpciones {
                 System.out.println("---------------------");
                 System.out.println("SELECCIONE UNA OPCION");
                 System.out.println("1. CARGAR LIBRO");
-                System.out.println("2. MODIFICAR LIBRO");
+                System.out.println("2. MODIFICAR LIBRO");   //OK
                 System.out.println("3. DAR ALTA/BAJA LIBRO");
                 System.out.println("4. ELIMINAR LIBRO POR ISBN");
                 System.out.println("5. MOSTRAR LIBROS");
@@ -114,8 +114,10 @@ public class MenuOpciones {
                 System.out.println("SELECCIONE UNA OPCION");
                 System.out.println("1. CARGAR AUTOR");
                 System.out.println("2. MODIFICAR AUTOR");
-                System.out.println("3. ELIMINAR AUTOR");
-                System.out.println("4. BUSCAR AUTOR POR NOMBRE");
+                System.out.println("3. DAR ALTA/BAJA AUTOR");   //OK
+                System.out.println("4. ELIMINAR AUTOR POR ID");
+                System.out.println("5. MOSTRAR AUTORES");   //OK
+                System.out.println("6. BUSCAR AUTOR POR NOMBRE");
                 System.out.println("0. VOLVER");
                 op = leer.nextInt();
                 salto();
@@ -128,9 +130,15 @@ public class MenuOpciones {
                         autorServicio.modificarAutor(cargarId());
                         break;
                     case 3:
-                        autorServicio.eliminarAutor(cargarId());
+                        autorServicio.darAltaBajaAutor(cargarId(), altaBaja());
                         break;
                     case 4:
+                        autorServicio.eliminarAutor(cargarId());
+                        break;
+                    case 5:
+                        autorServicio.imprimirAutores();
+                        break;
+                    case 6:
                         autorServicio.imprimirAutores(cargarNombreAutor());
                         break;
                     case 0:
@@ -152,6 +160,10 @@ public class MenuOpciones {
                 System.out.println("---------------------");
                 System.out.println("SELECCIONE UNA OPCION");
                 System.out.println("1. CREAR EDITORIAL");
+                System.out.println("2. MODIFICAR EDITORIAL");
+                System.out.println("3. DAR ALTA/BAJA EDITORIAL");   //OK
+                System.out.println("4. ELIMINAR EDITORIAL POR ID");
+                System.out.println("5. MOSTRAR EDITORIALES");
                 System.out.println("0. VOLVER");
                 op = leer.nextInt();
                 salto();
@@ -159,6 +171,18 @@ public class MenuOpciones {
                 switch (op) {
                     case 1:
                         editorialServicio.crearEditorial(cargarNombreEditorial());
+                        break;
+                    case 2:
+                        editorialServicio.modificarEditorial(cargarId());
+                        break;
+                    case 3:
+                        editorialServicio.darAltaBajaEditorial(cargarId(), altaBaja());
+                        break;
+                    case 4:
+                        editorialServicio.eliminarEditorial(cargarId());
+                        break;
+                    case 5:
+                        editorialServicio.imprimirEditoriales();
                         break;
                     case 0:
                         break;
@@ -214,7 +238,7 @@ public class MenuOpciones {
     }
 
     public int cargarId() {
-        System.out.println("INGRESE EL ID DEL AUTOR A ELIMINAR");
+        System.out.println("INGRESE EL ID");
         int id = leer.nextInt();
         return id;
     }

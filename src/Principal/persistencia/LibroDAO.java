@@ -35,29 +35,37 @@ public final class LibroDAO {
         return libro;
     }
 
+    public List<Libro> listarLibrosPorEditorial(int EDITORIAL_ID) throws Exception {
+        List<Libro> libros = em.createQuery("SELECT l "
+                + "FROM Libro l "
+                + "WHERE l.editorial = " + EDITORIAL_ID).
+                getResultList();
+        return libros;
+    }
+
     public List<Libro> listarLibros() throws Exception {
         List<Libro> libros = em.createQuery("SELECT L FROM Libro L")
                 .getResultList();
         return libros;
     }
-    
+
     public List<Libro> buscarLibroTitulo(String titulo) throws Exception {
         List<Libro> libros = em.createQuery("SELECT l "
                 + " FROM Libro l"
                 + " WHERE l.titulo LIKE :titulo").
                 setParameter("titulo", titulo).
                 getResultList();
-       
+
         return libros;
     }
-    
+
     public List<Libro> buscarLibroPorAutor(String nombre) throws Exception {
         List<Libro> libros = em.createQuery("SELECT l "
                 + " FROM Libro l"
                 + " WHERE l.autor.nombre LIKE :nombre").
                 setParameter("nombre", nombre).
                 getResultList();
-       
+
         return libros;
     }
 

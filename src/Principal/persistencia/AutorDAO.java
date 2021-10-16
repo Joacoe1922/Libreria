@@ -41,7 +41,13 @@ public class AutorDAO {
                 + " WHERE a.nombre LIKE :nombre").
                 setParameter("nombre", nombre).
                 getResultList();
-       
+
+        return autores;
+    }
+
+    public List<Autor> listarAutores() throws Exception {
+        List<Autor> autores = em.createQuery("SELECT A FROM Autor A")
+                .getResultList();
         return autores;
     }
 

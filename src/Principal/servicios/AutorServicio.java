@@ -69,6 +69,36 @@ public class AutorServicio {
         return autor;
     }
 
+    public Collection<Autor> listaAutores() throws Exception {
+        try {
+            Collection<Autor> autores = daoAutor.listarAutores();
+            return autores;
+        } catch (Exception e) {
+            throw e;
+        }
+    }
+
+    public void imprimirAutores() throws Exception {
+        try {
+            //Listamos los autores
+            Collection<Autor> autores = listaAutores();
+
+            //Imprimimos los autores - Solo algunos atributos....
+            if (autores.isEmpty()) {
+                throw new Exception("No existen autores para imprimir");
+            } else {
+                System.out.printf("%-10s%-25s\n", "ID", "NOMBRE");
+                for (Autor a : autores) {
+                    if (a.isAlta()) {
+                        System.out.printf("%-10s%-25s\n", a.getId(), a.getNombre());
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
     public void modificarAutor(int id) {
         try {
             Autor autor = daoAutor.buscarAutorId(id);
@@ -88,7 +118,7 @@ public class AutorServicio {
             System.out.println("Error al modificar el autor " + e.getMessage());
         }
     }
-    
+
     public Autor modificarAutorParaLibro(int id) {
         Autor autor = new Autor();
         try {
@@ -148,6 +178,23 @@ public class AutorServicio {
             }
         } catch (Exception e) {
             System.out.println("Error al imprimir " + e.getMessage());
+        }
+    }
+    
+    public void darAltaBajaAutor(int id, boolean altaBaja) {
+        try {
+            if (id == 0) {
+                throw new Exception("Debe indicar el Id");
+            }
+            for (Autor autor : listaAutores()) {
+                if (autor.getId().equals(id)) {
+                    autor.setAlta(altaBaja);
+                    daoAutor.modificarAutor(autor);
+                }
+            }
+            
+        } catch (Exception e) {
+            System.out.println("Error al dar de baja " + e.getMessage());
         }
     }
 }
